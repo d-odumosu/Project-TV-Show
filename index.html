@@ -5,17 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TV Show Project | My Name (My GitHub username)</title>
     <link href="style.css" rel="stylesheet" />
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
   </head>
-
   <body>
-    <div id="root">
+  <main id="episodes">
+    <div class="episode-list">
+      <template id="episode-template">
+        <article class="episode-card">
+          <h3 class="episode-title"></h3>
+          <img class="episode-image"  alt="">
+          <p class="episode-description"></p>
+        </article>
+      </template>
     </div>
-
-    <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
+  </main>
     <script src="episodes.js"></script>
-
-    <!-- Loads YOUR javascript code -->
     <script src="script.js"></script>
   </body>
 </html>
