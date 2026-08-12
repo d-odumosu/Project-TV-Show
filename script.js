@@ -1,13 +1,14 @@
 const allEpisodes = getAllEpisodes();
 const episodeList = document.querySelector('.episode-list');
-const episodes = allEpisodes.map((episode) => {
-    return createEpisodes(episode);
-});
-episodes.forEach((episodeCard) => {
+
+function displayEpisodes(episodes) {
+episodes.forEach((episode) => {
+    const episodeCard = createEpisodeCard(episode);
     episodeList.appendChild(episodeCard);
 });
+}
 
-function createEpisodes(episode) {
+function createEpisodeCard(episode) {
     const episodeCard = document
         .getElementById('episode-template')
         .content.cloneNode(true);
@@ -21,3 +22,5 @@ function createEpisodes(episode) {
     episodeCard.querySelector('p').innerHTML = summary;
     return episodeCard;
 }
+
+displayEpisodes(allEpisodes);
