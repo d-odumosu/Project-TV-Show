@@ -8,7 +8,14 @@
   </head>
   <body>
   <main id="episodes">
-    <div class="episode-list">
+    <label for="search">search episodes:</label>
+    <input type="text" id="search" />
+    <p id="episode-count"></p>
+
+    <label for="episode-select">Jump to an episode:</label>
+<select id="episode-select">
+  <option value="">Select an episode</option>
+</select>
       <template id="episode-template">
         <article class="episode-card">
           <h3 class="episode-title"></h3>
@@ -16,7 +23,7 @@
           <p class="episode-description"></p>
         </article>
       </template>
-    </div>
+   <div class="episode-list"></div>
   </main>
     <script src="episodes.js"></script>
     <script src="script.js"></script>
