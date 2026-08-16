@@ -2,6 +2,7 @@ const episodesContainer = document.getElementById('episode-container');
 const searchInput = document.getElementById('search');
 const searchCount = document.getElementById('search-count');
 const episodeSelect = document.getElementById('episode-select');
+const statusMessage = document.getElementById('status-message');
 
 function getEpisodes() {
     return appData.episodes;
@@ -34,8 +35,14 @@ function render(episodes) {
 }
 
 async function setup() {
-    await getData(); // wait for fetched data
-
+    statusMessage.textContent = 'Episodes loading...';
+    const success = await getData(); // wait for fetched data
+    if (success) {
+        statusMessage.textContent = '';
+    } else {
+        statusMessage.textContent = 'Unable to load episodes, try again later';
+        return;
+    }
     const allEpisodes = appData.episodes;
     render(allEpisodes);
     populateOption(allEpisodes);
@@ -67,7 +74,7 @@ searchInput.addEventListener('input', () => {
     if (searchTerm) {
         searchCount.textContent = `Displaying: ${filteredEpisodes.length}/${allEpisodes.length}`;
     } else {
-        searchCount.textContent = '';
+        searchCount.textcontent = '';
     }
     render(filteredEpisodes);
 });

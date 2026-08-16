@@ -8,10 +8,10 @@ async function getData() {
         if (!response.ok) {
             throw new Error(`Response status: ${response.status}`);
         }
-
         appData.episodes = await response.json();
-        console.log(appData.episodes);
+        return true;
     } catch (error) {
         console.error(error.message);
+        return false;
     }
 }
