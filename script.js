@@ -4,11 +4,11 @@ const searchCount = document.getElementById('search-count');
 const episodeSelect = document.getElementById('episode-select');
 
 function getEpisodes() {
-    return getAllEpisodes();
+    return appData.episodes;
 }
 
-function populateOption(episodeList) {
-    episodeList.forEach((episode) => {
+function populateOption(episodes) {
+    episodes.forEach((episode) => {
         const episodeOption = document.createElement('option');
         episodeOption.textContent = `S${String(episode.season).padStart(2, '0')}E${String(episode.number).padStart(2, '0')} - ${episode.name}`;
         episodeOption.value = episode.id;
@@ -33,8 +33,10 @@ function render(episodes) {
     });
 }
 
-function setup() {
-    const allEpisodes = getEpisodes();
+async function setup() {
+    await getData(); // wait for fetched data
+
+    const allEpisodes = appData.episodes;
     render(allEpisodes);
     populateOption(allEpisodes);
 }
