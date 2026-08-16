@@ -18,11 +18,12 @@
            id="search"
            name="episode"
            placeholder="enter episode"/>
-    <p id="episode-count"></p>
+    <button>search</button>
+    <p id="search-count"></p>
 
     <label for="episode-select">Select an episode:</label>
     <select id="episode-select" name="episode">
-        <option value="" disabled selected>Select an episode</option>
+        <option value="" selected>Select an episode</option>
     </select>
     <template id="episode-template">
         <article class="episode-card">
@@ -31,7 +32,9 @@
             <p class="episode-description"></p>
         </article>
     </template>
-    <div class="episode-list"></div>
+    <div class="episode-container" id="episode-container">
+        <p id="status-message"></p>
+    </div>
 </main>
 <footer>
     <div id="footer">
@@ -41,7 +44,7 @@
         </p>
     </div>
 </footer>
-<script src="episodes.js"></script>
+<script src="getData.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
