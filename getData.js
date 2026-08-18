@@ -1,42 +1,20 @@
-// Refactor: store shows as well as episodes
 const appData = {
     shows: [],
     episodes: [],
-    episodeCache: {},
+    episodesCache: new Map(),
+    selectedShow: '',
+    selectedEpisode: '',
+    searchTerm: '',
 };
 
-// Refactor: make the episode-fetching function reusable for any show.
-async function fetchEpisodes(showId) {
-    if (appData.episodeCache[showId]) {
-        appData.episodes = appData.episodeCache[showId];
-        return true;
-    }
+// --------------------------
+// API / FETCH FUNCTIONS
+// --------------------------
 
-    const url = `https://api.tvmaze.com/shows/${showId}/episodes`;
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`Response status: ${response.status}`);
-        }
-        const episodes = await response.json();
-
-        // Refactor: save the episodes so this show's URL is not fetched again.
-        appData.episodeCache[showId] = episodes;
-        appData.episodes = episodes;
-        return true;
-    } catch (error) {
-        console.error(error.message);
-        return false;
-    }
-}
-
-// Fetch the list of TV shows from the TVMaze API.
-async function fetchShows() {
+async function getShows() {
     const url = 'https://api.tvmaze.com/shows';
-
     try {
         const response = await fetch(url);
-
         if (!response.ok) {
             throw new Error(`Response status: ${response.status}`);
         }
@@ -46,5 +24,26 @@ async function fetchShows() {
     } catch (error) {
         console.error(error.message);
         return false;
+    }
+}
+
+async function getShowEpisodes(showId) {
+    if (appData.episodesCache.has(appData.selectedShow)) {
+        appData.episodes = appData.episodesCache.get(appData.selectedShow);
+    } else {
+        const url = `https://api.tvmaze.com/shows/${showId}/episodes`;
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+
+            appData.episodes = await response.json();
+            return true;
+        } catch (error) {
+            console.error(error.message);
+            return false;
+        }
     }
 }

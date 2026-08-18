@@ -13,19 +13,21 @@
     </div>
 </header>
 <main id="episodes">
+    <label for="show-select">Select a show:</label>
+    <select id="show-select">
+        <option value="" selected>Select a show</option>
+    </select>
+    <div id="search-container">
+        <label for="search">search episodes:</label>
+        <input type="text"
+               id="search"
+               name="episode"
+               placeholder="enter episode"/>
+        <button>search</button>
+    </div>
 
-<label for="show-select">Select a show:</label>
-<select id="show-select">
-    <option value="" selected>Select a show</option>
-</select>
-
-    <label for="search">search episodes:</label>
-    <input type="text"
-           id="search"
-           name="episode"
-           placeholder="enter episode"/>
-    <button>search</button>
     <p id="search-count"></p>
+    <h2 id="totalEpisode"></h2>
 
     <label for="episode-select">Select an episode:</label>
     <select id="episode-select" name="episode">
