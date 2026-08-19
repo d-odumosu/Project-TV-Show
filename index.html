@@ -8,26 +8,26 @@
 </head>
 <body>
 <header>
-    <div id="header">
+    <div id="page-header">
         <h1 id="page-title">TV Show Episodes</h1>
     </div>
 </header>
-<main id="episodes">
+<main id="app">
     <label for="show-select">Select a show:</label>
     <select id="show-select">
         <option value="" selected>Select a show</option>
     </select>
     <div id="search-container">
-        <label for="search">search episodes:</label>
+        <label for="search-input">search episodes:</label>
         <input type="text"
-               id="search"
+               id="search-input"
                name="episode"
                placeholder="enter episode"/>
         <button>search</button>
     </div>
 
     <p id="search-count"></p>
-    <h2 id="totalEpisode"></h2>
+    <h2 id="total-episodes"></h2>
 
     <label for="episode-select">Select an episode:</label>
     <select id="episode-select" name="episode">
@@ -40,19 +40,35 @@
             <p class="episode-description"></p>
         </article>
     </template>
+    <template id="show-template">
+        <article class="show-card">
+            <h2 class="show-title"></h2>
+
+            <div class="show-content">
+                <img class="show-image" alt="">
+                <p class="show-summary"></p>
+                <ul class="show-details">
+                    <li class="show-rating"></li>
+                    <li class="show-genres"></li>
+                    <li class="show-status"></li>
+                    <li class="show-runtime"></li>
+                </ul>
+            </div>
+        </article>
+    </template>
     <div class="episode-container" id="episode-container">
         <p id="status-message"></p>
     </div>
 </main>
 <footer>
-    <div id="footer">
-        <p id="source">
+    <div id="page-footer">
+        <p id="data-source">
             Episode data originally comes from
             <a href="https://tvmaze.com/">TVMaze.com</a>
         </p>
     </div>
 </footer>
-<script src="getData.js"></script>
+<script src="appState.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

@@ -2,15 +2,19 @@
 // DOM ELEMENTS
 // --------------------------
 
-const episodesContainer = document.getElementById('episode-container');
-const searchInput = document.getElementById('search');
+const episodeContainer = document.getElementById('episode-container');
+const searchInput = document.getElementById('search-input');
 const searchCount = document.getElementById('search-count');
 const episodeSelect = document.getElementById('episode-select');
 const statusMessage = document.getElementById('status-message');
-const totalEpisode = document.getElementById('totalEpisode');
+const totalEpisodes = document.getElementById('total-episodes');
 const searchContainer = document.getElementById('search-container');
 const showSelect = document.getElementById('show-select');
 searchContainer.hidden = true;
+
+const image =
+    appState.episodes.image?.medium ??
+    '/Users/tairatodumosu/CYF/Project-TV-Show/placeholder.png';
 
 // ---------------------------
 // POPULATES SHOWS & EPISODES
@@ -25,27 +29,22 @@ function populateDropdown(optionData, selectElement, getText) {
 }
 
 // --------------------------
-//        RENDERING
+//        HELPER FUNCTIONS
 // --------------------------
-function render(episodes) {
-    episodesContainer.textContent = '';
-    episodes.forEach((episode) => {
-        const episodeCard = document
-            .getElementById('episode-template')
-            .content.cloneNode(true);
-        const episodeCode = `${episode.name} - S${episode.season.toString().padStart(2, '0')}E${episode.number.toString().padStart(2, '0')}`;
-        const summary = episode.summary || 'No summary available.';
-        const image = episode.image?.medium;
-        episodeCard.querySelector('.episode-title').textContent = episodeCode;
+function getImageUrl(item) {
+    return item.image?.medium ?? './images/placeholder.png';
+}
 
-        if (image) {
-            episodeCard.querySelector('.episode-image').src = image;
-        } else {
-            episodeCard.querySelector('.episode-image').remove();
-        }
-        episodeCard.querySelector('.episode-description').innerHTML = summary;
-        episodesContainer.appendChild(episodeCard);
-    });
+function createEpisodeCard(episode) {
+    const episodeCard = document
+        .getElementById('episode-template')
+        .content.cloneNode(true);
+    episodeCard.querySelector('.episode-title').textContent =
+        `${episode.name} - S${episode.season.toString().padStart(2, '0')}E${episode.number.toString().padStart(2, '0')}`;
+    episodeCard.querySelector('.episode-description').textContent =
+        episode.summary ?? 'No summary available.';
+    episodeCard.querySelector('.episode-image').src = getImageUrl(episode);
+    return episodeCard;
 }
 
 // --------------------------
@@ -60,52 +59,52 @@ async function setup() {
         statusMessage.textContent = 'Unable to load episodes, try again later';
         return;
     }
-    appData.shows.sort((showA, showB) => {
+    appState.shows.sort((showA, showB) => {
         return showA.name.toLowerCase().localeCompare(showB.name.toLowerCase());
     });
-    populateDropdown(appData.shows, showSelect, (show) => show.name);
+    populateDropdown(appState.shows, showSelect, (show) => show.name);
 }
 
 // --------------------------
 // EVENT LISTENERS
 // --------------------------
 showSelect.addEventListener('change', async () => {
-    appData.selectedShow = showSelect.value;
-    await getShows(appData.selectedShow);
+    appState.selectedShow = showSelect.value;
+    await getShowEpisodes(appState.selectedShow);
     episodeSelect.textContent = '';
     populateDropdown(
-        appData.episodes,
+        appState.episodes,
         episodeSelect,
         (episode) =>
             `S${String(episode.season).padStart(2, '0')}E${String(episode.number).padStart(2, '0')} - ${episode.name}`
     );
     searchContainer.hidden = false;
-    totalEpisode.textContent = `Displaying: ${appData.episodes.length}/${appData.episodes.length}`;
-    render(appData.episodes);
+    totalEpisodes.textContent = `Displaying: ${appState.episodes.length}/${appState.episodes.length}`;
+    render(appState.episodes);
 });
 
 episodeSelect.addEventListener('change', async () => {
-    appData.selectedEpisode = episodeSelect.value;
-    await getShowEpisodes(appData.selectedEpisode);
+    appState.selectedEpisode = episodeSelect.value;
+    await getShowEpisodes(appState.selectedEpisode);
 
-    const episode = appData.episodes.find((episode) => {
-        return appData.episodes.id === Number(appData.selectedEpisode);
+    const foundEpisode = appState.episodes.find((episode) => {
+        return episode.id === Number(appState.selectedEpisode);
     });
-    if (episode) {
-        totalEpisode.textContent = `Displaying: ${[episode].length}/${appData.episodes.length}`;
-        render([episode]);
+    if (foundEpisode) {
+        totalEpisodes.textContent = `Displaying: ${[foundEpisode].length}/${appState.episodes.length}`;
+        render([foundEpisode]);
     }
 });
 
 searchInput.addEventListener('input', () => {
-    appData.searchTerm = searchInput.value.toLowerCase();
-    const filteredEpisodes = appData.episodes.filter(
+    appState.searchTerm = searchInput.value.toLowerCase();
+    const filteredEpisodes = appState.episodes.filter(
         (episode) =>
-            episode.name.toLowerCase().includes(appData.searchTerm) ||
-            (episode.summary || '').toLowerCase().includes(appData.searchTerm)
+            episode.name.toLowerCase().includes(appState.searchTerm) ||
+            (episode.summary || '').toLowerCase().includes(appState.searchTerm)
     );
-    if (appData.searchTerm) {
-        searchCount.textContent = `Displaying: ${filteredEpisodes.length}/${appData.episodes.length}`;
+    if (appState.searchTerm) {
+        searchCount.textContent = `Displaying: ${filteredEpisodes.length}/${appState.episodes.length}`;
     } else {
         searchCount.textContent = '';
     }
