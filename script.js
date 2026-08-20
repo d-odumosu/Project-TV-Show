@@ -4,15 +4,19 @@
 
 // Store references to elements that already exist in the HTML
 const episodeContainer = document.getElementById('episode-container');
-const searchInput = document.getElementById('search-input');
+const searchInput = document.getElementById('episode-search-input');
 const searchCount = document.getElementById('search-count');
 const episodeSelect = document.getElementById('episode-select');
 const statusMessage = document.getElementById('status-message');
 const totalEpisodes = document.getElementById('total-episodes');
-const searchContainer = document.getElementById('search-container');
-const showSelect = document.getElementById('show-select');
 
-searchContainer.hidden = true;
+const showSelect = document.getElementById('show-select');
+const showContainer = document.getElementById('show-container');
+const showControls = document.getElementById('show-controls');
+const episodeControls = document.getElementById('episode-controls');
+const showView = document.getElementById('show-view');
+const episodeView = document.getElementById('episode-view');
+
 // --------------------------
 // HELPER FUNCTIONS
 // --------------------------
@@ -34,6 +38,17 @@ function populateDropdown(optionData, selectElement, getText) {
 function getImageUrl(item) {
     return item.image?.medium ?? './images/placeholder.png';
 }
+function switchView(view) {
+    // Update app state
+    appState.currentView = view;
+    if (view === 'shows') {
+        showView.hidden = false;
+        episodeView.hidden = true;
+    } else if (view === 'episodes') {
+        episodeView.hidden = false;
+        showView.hidden = true;
+    }
+}
 // --------------------------
 // RENDER FUNCTIONS
 // --------------------------
@@ -41,11 +56,11 @@ function getImageUrl(item) {
 /*
  * Clears the container and renders a list of cards.
  */
-function render(data, createCard) {
-    episodeContainer.textContent = '';
+function render(data, createCard, container) {
+    container.textContent = '';
     data.forEach((datum) => {
         const card = createCard(datum);
-        episodeContainer.appendChild(card);
+        container.appendChild(card);
     });
 }
 /*
@@ -75,17 +90,31 @@ function createShowCard(show) {
     const showGenres = showCard.querySelector('.show-genres');
     const showStatus = showCard.querySelector('.show-status');
     const showRuntime = showCard.querySelector('.show-runtime');
+    const ratingLabel = document.createElement('strong');
+    const genresLabel = document.createElement('strong');
+    const statusLabel = document.createElement('strong');
+    const runtimeLabel = document.createElement('strong');
 
     showTitle.textContent = show.name;
     showTitle.dataset.showId = show.id;
     showImage.src = getImageUrl(show);
     showImage.dataset.showId = show.id;
     showImage.alt = show.name;
+    ratingLabel.textContent = 'Rated:';
+    genresLabel.textContent = 'Genres:';
+    statusLabel.textContent = 'Status:';
+    runtimeLabel.textContent = 'Runtime:';
+
     showSummary.innerHTML = show.summary ?? 'No summary available.';
-    showRating.textContent = `Rated: ${show.rating?.average ?? 'Not rated'}`;
-    showGenres.textContent = `Genres: ${show.genres.join(', ')}`;
-    showStatus.textContent = `Status: ${show.status}`;
-    showRuntime.textContent = `Runtime: ${show.runtime}`;
+    showRating.appendChild(ratingLabel);
+    showGenres.appendChild(genresLabel);
+    showStatus.appendChild(statusLabel);
+    showRuntime.appendChild(runtimeLabel);
+
+    showRating.append(` ${show.rating?.average ?? 'Not rated'}`);
+    showGenres.append(` ${show.genres.join(', ')}`);
+    showStatus.append(` ${show.status}`);
+    showRuntime.append(` ${show.runtime}`);
     return showCard;
 }
 // --------------------------
@@ -129,7 +158,8 @@ async function handleShowClick(event) {
         'Unable to load episodes. Please try again later.',
         showId
     );
-    render(appState.episodes, createEpisodeCard);
+    switchView('episodes');
+    render(appState.episodes, createEpisodeCard, episodeContainer);
 }
 // --------------------------
 // APP INITIALISATION
@@ -150,7 +180,8 @@ async function setup() {
         return showA.name.toLowerCase().localeCompare(showB.name.toLowerCase());
     });
     populateDropdown(appState.shows, showSelect, (show) => show.name);
-    render(appState.shows, createShowCard);
+    switchView('shows');
+    render(appState.shows, createShowCard, showContainer);
     const showTitles = document.querySelectorAll('.show-title');
     showTitles.forEach((showTitle) => {
         showTitle.addEventListener('click', handleShowClick);
@@ -180,9 +211,8 @@ showSelect.addEventListener('change', async () => {
         (episode) =>
             `S${String(episode.season).padStart(2, '0')}E${String(episode.number).padStart(2, '0')} - ${episode.name}`
     );
-    searchContainer.hidden = false;
     totalEpisodes.textContent = `Displaying: ${appState.episodes.length}/${appState.episodes.length}`;
-    render(appState.episodes, createEpisodeCard);
+    render(appState.episodes, createEpisodeCard, episodeContainer);
 });
 /*
  * Displays the selected episode.
@@ -196,7 +226,7 @@ episodeSelect.addEventListener('change', async () => {
     });
     if (foundEpisode) {
         totalEpisodes.textContent = `Displaying: ${[foundEpisode].length}/${appState.episodes.length}`;
-        render([foundEpisode], createEpisodeCard);
+        render([foundEpisode], createEpisodeCard, episodeContainer);
     }
 });
 /*
@@ -214,7 +244,7 @@ searchInput.addEventListener('input', () => {
     } else {
         searchCount.textContent = '';
     }
-    render(filteredEpisodes);
+    render(filteredEpisodes, createEpisodeCard, episodeContainer);
 });
 
 // --------------------------

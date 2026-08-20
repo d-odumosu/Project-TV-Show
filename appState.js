@@ -5,6 +5,7 @@ const appState = {
     selectedShow: '',
     selectedEpisode: '',
     searchTerm: '',
+    currentView: 'shows',
 };
 
 // --------------------------

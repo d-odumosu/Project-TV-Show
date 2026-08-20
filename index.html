@@ -7,59 +7,122 @@
     <link href="style.css" rel="stylesheet"/>
 </head>
 <body>
+
 <header>
     <div id="page-header">
-        <h1 id="page-title">TV Show Episodes</h1>
+        <h1 id="page-title">TV Shows Explorer</h1>
     </div>
 </header>
+
 <main id="app">
-    <label for="show-select">Select a show:</label>
-    <select id="show-select">
-        <option value="" selected>Select a show</option>
-    </select>
-    <div id="search-container">
-        <label for="search-input">search episodes:</label>
-        <input type="text"
-               id="search-input"
-               name="episode"
-               placeholder="enter episode"/>
-        <button>search</button>
-    </div>
+    <!-- Shared status message -->
+    <p id="status-message"></p>
 
-    <p id="search-count"></p>
-    <h2 id="total-episodes"></h2>
+    <!-- SHOW VIEW -->
+    <div id="show-view">
 
-    <label for="episode-select">Select an episode:</label>
-    <select id="episode-select" name="episode">
-        <option value="" selected>Select an episode</option>
-    </select>
-    <template id="episode-template">
-        <article class="episode-card">
-            <h3 class="episode-title"></h3>
-            <img class="episode-image" alt="">
-            <p class="episode-description"></p>
-        </article>
-    </template>
-    <template id="show-template">
-        <article class="show-card">
-            <h2 class="show-title"></h2>
+        <!-- Show controls -->
+        <div class="show-controls" id="show-controls">
 
-            <div class="show-content">
-                <img class="show-image" alt="">
-                <p class="show-summary"></p>
-                <ul class="show-details">
-                    <li class="show-rating"></li>
-                    <li class="show-genres"></li>
-                    <li class="show-status"></li>
-                    <li class="show-runtime"></li>
-                </ul>
+            <div class="show-selector" id="show-selector">
+                <label for="show-select">Select a show:</label>
+
+                <select id="show-select" name="show">
+                    <option value="" selected>Select a show</option>
+                </select>
             </div>
-        </article>
-    </template>
-    <div class="episode-container" id="episode-container">
-        <p id="status-message"></p>
+
+            <div class="show-search" id="show-search-container">
+                <label for="show-search-input">Search shows:</label>
+
+                <input
+                        type="text"
+                        id="show-search-input"
+                        name="show"
+                        placeholder="Search shows"
+                />
+            </div>
+
+        </div>
+
+        <!-- Show template -->
+        <template id="show-template">
+            <article class="show-card">
+                <h2 class="show-title"></h2>
+
+                <div class="show-content">
+                    <img class="show-image" alt="">
+                    <p class="show-summary"></p>
+
+                    <ul class="show-details">
+                        <li class="show-rating"></li>
+                        <li class="show-genres"></li>
+                        <li class="show-status"></li>
+                        <li class="show-runtime"></li>
+                    </ul>
+                </div>
+            </article>
+        </template>
+        <!-- Shows container -->
+        <div id="show-container"></div>
     </div>
+
+
+    <!-- EPISODE VIEW -->
+    <div id="episode-view">
+
+        <!-- Back to shows -->
+        <div class="show-navigation">
+            <button type="button" id="home-button">
+                Back to Shows
+            </button>
+        </div>
+
+        <!-- Episode controls -->
+        <div class="episode-controls" id="episode-controls">
+
+            <div class="episode-selector" id="episode-selector">
+                <label for="episode-select">Select an episode:</label>
+
+                <select id="episode-select" name="episode">
+                    <option value="" selected>Select an episode</option>
+                </select>
+            </div>
+
+            <div class="episode-search" id="episode-search-container">
+                <label for="episode-search-input">Search episodes:</label>
+
+                <input
+                        type="text"
+                        id="episode-search-input"
+                        name="episode"
+                        placeholder="Search episodes"
+                />
+            </div>
+
+        </div>
+
+        <!-- Episode display information -->
+        <div class="episode-info">
+            <p id="search-count"></p>
+            <h2 id="total-episodes"></h2>
+        </div>
+
+        <!-- Episode template -->
+        <template id="episode-template">
+            <article class="episode-card">
+                <h3 class="episode-title"></h3>
+                <img class="episode-image" alt="">
+                <p class="episode-description"></p>
+            </article>
+        </template>
+
+        <!-- Episodes container -->
+        <div id="episode-container"></div>
+    </div>
+
 </main>
+
 <footer>
     <div id="page-footer">
         <p id="data-source">
@@ -68,7 +131,9 @@
         </p>
     </div>
 </footer>
+
 <script src="appState.js"></script>
 <script src="script.js"></script>
+
 </body>
 </html>
