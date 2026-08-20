@@ -8,11 +8,7 @@
 </head>
 <body>
 
-<header>
-    <div id="page-header">
-        <h1 id="page-title">TV Shows Explorer</h1>
-    </div>
-</header>
+
 
 <main id="app">
     <!-- Shared status message -->
@@ -42,6 +38,7 @@
                         placeholder="Search shows"
                 />
             </div>
+            <p id="show-search-count"></p>
 
         </div>
 
@@ -71,11 +68,19 @@
     <!-- EPISODE VIEW -->
     <div id="episode-view">
 
-        <!-- Back to shows -->
-        <div class="show-navigation">
-            <button type="button" id="home-button">
-                Back to Shows
-            </button>
+        <div class="episode-header">
+
+            <div class="show-navigation">
+                <button type="button" id="home-button">
+                    Back to Shows
+                </button>
+            </div>
+
+            <div class="episode-info">
+                <p id="episode-search-count"></p>
+                <h2 id="total-episodes"></h2>
+            </div>
+
         </div>
 
         <!-- Episode controls -->
@@ -102,11 +107,7 @@
 
         </div>
 
-        <!-- Episode display information -->
-        <div class="episode-info">
-            <p id="search-count"></p>
-            <h2 id="total-episodes"></h2>
-        </div>
+
 
         <!-- Episode template -->
         <template id="episode-template">
@@ -126,7 +127,7 @@
 <footer>
     <div id="page-footer">
         <p id="data-source">
-            Episode data originally comes from
+            © Damilola Odumosu 2026 | Data taken from
             <a href="https://tvmaze.com/">TVMaze.com</a>
         </p>
     </div>

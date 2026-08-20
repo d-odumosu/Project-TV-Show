@@ -4,7 +4,8 @@ const appState = {
     episodesCache: new Map(),
     selectedShow: '',
     selectedEpisode: '',
-    searchTerm: '',
+    episodeSearchTerm: '',
+    showSearchTerm: '',
     currentView: 'shows',
 };
 
@@ -31,6 +32,7 @@ async function getShows() {
 async function getShowEpisodes(showId) {
     if (appState.episodesCache.has(appState.selectedShow)) {
         appState.episodes = appState.episodesCache.get(appState.selectedShow);
+        return true;
     } else {
         const url = `https://api.tvmaze.com/shows/${showId}/episodes`;
         try {
